@@ -5,22 +5,28 @@ import (
 )
 
 type AppConfig struct {
-	Port       string
-	MongoDBURI string
-	// Add more configuration fields as needed
+	Port                string
+	MongoDBURI          string
+	DbName              string
+	MongoUserCollection string
 }
 
 func NewConfig() *AppConfig {
 	return &AppConfig{
-		Port:       getEnv("PORT"),
-		MongoDBURI: getEnv("MONGODB_URI"),
-		// Initialize other config fields
+		Port:                getEnv("PORT"),
+		MongoDBURI:          getEnv("MONGODB_URI"),
+		DbName:              getEnv("MONGODB_NAME"),
+		MongoUserCollection: getEnv("MONGO_USER_COLLECTION"),
 	}
 }
 
 func getEnv(key string) string {
-	if value, ok := os.LookupEnv(key); ok {
+	var (
+		value string
+		ok    bool
+	)
+	if value, ok = os.LookupEnv(key); ok {
 		return value
 	}
-	return key
+	return os.Getenv(value)
 }
